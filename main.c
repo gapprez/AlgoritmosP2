@@ -5,6 +5,7 @@
 
 #define UMBRAL 10
 
+
 void inicializar_semilla() {
     srand(time(NULL));
 }
@@ -29,6 +30,14 @@ void ascendente(int v [], int n) {
         v[i] = i;
 }
 
+void descendente (int v[], int n){
+	int i;
+
+	for (i = 0; i < n; i++) {
+		v[i] = n - i - 1;
+	}
+}
+
 void ord_ins (int v [], int n) {
     int i, j, x;
     for (i=1; i<n; i++) {
@@ -41,27 +50,60 @@ void ord_ins (int v [], int n) {
         v[j+1] = x;
     }
 }
+
+
 int es_ordenado(int v[], int n){
-    int i,j;
-    for(i = 0; i < n; i++){
-        for(j = 0; j < n; j++){
-            if(!v[i]<=v[j]) return 0;
-        }
+    int i;
+
+    for(i = 0; i < n - 2; i++){
+    	if (v[i] > v[i+1]) {
+			return 0;
+    	}
     }
+
     return 1;
 }
+
+void mostrarArray(int v[], int n) {
+	int i;
+
+	for (i = 0; i < n - 1; ++i) {
+		printf("%d, ", v[i]);
+	}
+	printf("%d\n", v[i]);
+}
+
+struct {
+	char* nombre;
+	void (*func)(int v[], int nargs);
+} ini [] = {
+	{"aleatoria",aleatorio},
+	{"descendente", descendente},
+	{"ascendente", ascendente},
+	{NULL, NULL}
+};
+
 void test(){
     int v[UMBRAL];
     int i;
 
     inicializar_semilla();
-    aleatorio(v, UMBRAL);
-    ord_ins(v, UMBRAL);
 
-    for( i = 0; i< UMBRAL-1; i++){
-        printf("%d, ",v[i]);
+    for (i = 0; ini[i].nombre != NULL; i++) {
+		ini[i].func(v, UMBRAL);
+		printf("Ordenación por insercion con inicializacón %s\n", ini[i].nombre);
+		mostrarArray(v, UMBRAL);
+		printf("¿ordenado? ");
+		if (es_ordenado(v, UMBRAL)) {
+			printf("1\n\n");
+		}
+		else {
+			printf("0\nordenando...\n");
+			ord_ins(v, UMBRAL);
+			mostrarArray(v, UMBRAL);
+			printf("¿ordenado? %d\n\n", es_ordenado(v,UMBRAL));
+		}
     }
-    printf("%d",v[i]);
 }
 
 int main() {
