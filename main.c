@@ -28,7 +28,7 @@ void ascendente(int v [], int n) {
     for (i=0; i < n; i++)
         v[i] = i;
 
-    
+
 }
 
 void ord_ins (int v [], int n) {
