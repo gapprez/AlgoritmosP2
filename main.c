@@ -5,12 +5,12 @@
 #include <math.h>
 #include <string.h>
 
-#define UMBRAL 10
+#define UMBRAL 100
 
-struct fun{
+typedef struct {
 	char* nombre;
 	void (*func)(int v[], int nargs);
-};
+} fun;
 
 typedef struct {
 	char* sobreS;
@@ -151,7 +151,7 @@ void mostrarArray(int v[], int n) {
 
 
 
-void test(struct fun ord[], struct fun ini[]){
+void test(fun ord[], fun ini[]){
 	int k = 10;
     int v[k];
     int i, j;
@@ -179,19 +179,21 @@ void test(struct fun ord[], struct fun ini[]){
 void obtenerN (int cod_op, cotas* c, int* ni, int* nf, int* mul) {
 	switch (cod_op) {
 		case 0:
-			*ni = 500;
-			*nf = 32000;
-			*mul = 2;
-			break;
 		case -1:
 			*ni = 500;
 			*nf = 32000;
 			*mul = 2;
+			strcpy(c->sobreS, "n^(1.8)");
+			strcpy(c->ajusS,"n^2");
+			strcpy(c->subS,"n^2*log(n)");
 			break;
 		case -2:
 			*ni = 500;
 			*nf = 32000;
 			*mul = 2;
+			strcpy(c->sobreS, "n^0.8");
+			strcpy(c->ajusS,"n");
+			strcpy(c->subS,"n*log(n)");
 			break;
 		case 3:
 		case 2:
@@ -214,10 +216,15 @@ void calculoCotas(int cod_op, int n, cotas c) {
 
 	switch (cod_op) {
 		case 0:
-			break;
 		case -1:
+			*c.sobreF =(float) pow(n, 1.8);
+			*c.ajusF =(float) pow(n, 2);
+			*c.subF =(float) (pow(n,2)*log(n));
 			break;
 		case -2:
+			*c.sobreF =(float) pow(n, 0.8);
+			*c.ajusF =(float) n;
+			*c.subF =(float) (n*log(n));
 			break;
 		case 3:
 		case 2:
@@ -248,7 +255,7 @@ void complejidad(void (*ord)(int [], int),
 
 	obtenerN(cod_op, &c, &n, &nf, &mul);
 
-	printf("%9s\t%12s\t%10s\t%10s\t%10s\n", "n", "t(n)", c.sobreS, c.ajusS, c.subS);
+	printf("%12s\t%12s\t%10s\t%10s\t%10s\n", "n", "t(n)", c.sobreS, c.ajusS, c.subS);
 	for (n = n; n <= nf; n = n * mul) {
 		v = malloc(sizeof(int)*n);
 		ini(v, n);
@@ -256,9 +263,10 @@ void complejidad(void (*ord)(int [], int),
 		ord(v, n);
 		tb = microsegundos();
 		t = tb - ta;
+		calculoCotas(cod_op, n, c);
 		if (t < 500) {
 			ta = microsegundos();
-			for (k = 0; k < 500; k++) {
+			for (k = 0; k < 1000; k++) {
 				ini(v, n);
 				ord(v, n);
 			}
@@ -266,16 +274,16 @@ void complejidad(void (*ord)(int [], int),
 			t = tb - ta;
 
 			ta = microsegundos();
-			for (k = 0; k < 500; k++) {
+			for (k = 0; k < 1000; k++) {
 				ini(v, n);
 			}
 			tb = microsegundos();
 
 			ti = tb - ta;
 			t = (t - ti) / k;
+			printf("(*)%9d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(*c.sobreF), t/(*c.ajusF), t/(*c.subF));
 		}
-		calculoCotas(cod_op, n, c);
-		printf("%9d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(*c.sobreF), t/(*c.ajusF), t/(*c.subF));
+		else printf("%12d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(*c.sobreF), t/(*c.ajusF), t/(*c.subF));
 		free(v);
 	}
 
@@ -287,7 +295,7 @@ void complejidad(void (*ord)(int [], int),
 	free(c.ajusS);
 }
 
-void mostrarComplejidad(struct fun ord[], struct fun ini[]) {
+void mostrarComplejidad(fun ord[], fun ini[]) {
 	int j, i;
 
 	inicializar_semilla();
@@ -305,14 +313,14 @@ void mostrarComplejidad(struct fun ord[], struct fun ini[]) {
 int main() {
 
 
-	struct fun ini[] = {
+	fun ini[] = {
 		{"aleatoria",aleatorio},
 		{"descendente", descendente},
 		{"ascendente", ascendente},
 		{NULL, NULL}
 	};
 
-	struct fun ord [] = {
+	fun ord [] = {
 		{"por insercion",ord_ins},
 		{"rápida", ord_rapida},
 		{NULL, NULL}
