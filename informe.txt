@@ -177,16 +177,15 @@ Los valores que aparecen en las tablas son los siguientes (de izquierda a derech
 	Cota sobreestimada
 
 Conclusiones:
-
 	Se han realizado varias mediciones, con las primeras la O decrecía y tuvimos que
 	calentar el procesador para que saliera del modo ahorro de energía.
 
-    tratando de acotar la complejidad del algoritmo de inserción nos encontramos con una situación
-    anómala. En el caso del vector inicialmente ascendente, probamos n*logn como cota ligeramente
-    subestimada sinembargo nos salía como cota ligeramente sobrestimada. Si tenemos que n*log(n) > n
-    y t(n)/n tiende a una constante entonces t(n)/n*log(n) tendría decrecer pero no fue así. Seguramente
-    se deba a que la función logarítmica crece muy rapido al principio y luego la pendiente se suaviza,
-    al no poder coger el siguiente valor de n desechamos esta cota.
+    	tratando de acotar la complejidad del algoritmo de inserción nos encontramos con una situación
+    	anómala. En el caso del vector inicialmente ascendente, probamos n*logn como cota ligeramente
+    	subestimada sin embargo nos salía como cota ligeramente sobrestimada. Si tenemos que n*log(n) > n
+    	y t(n)/n tiende a una constante entonces t(n)/n*log(n) tendría decrecer pero no fue así. Seguramente
+    	se deba a que la función logarítmica crece muy rapido al principio y luego la pendiente se suaviza,
+    	al no poder coger el siguiente valor de n desechamos esta cota.
 
         n      t(n)        t(n)/n*logn t(n)/n      t(n)/logn
     	100    0.28000     0.0128945   0.0028000   0.06080123
@@ -197,9 +196,9 @@ Conclusiones:
     	3200   9.57000     0.0241371   0.0029906   1.18574047
     	6400   19.61000    0.0268536   0.0030641   2.23754916
 
-    Hemos calculado todas las cotas empíricamente, las hemos acotado mediante el método de dicotomía, hemos usado
-    la complejidad teórica como referencia inicial para afinar la búsqueda. Las cotas a las que llegamos fueron
-    las siguientes:
+    	Hemos calculado todas las cotas empíricamente, las hemos acotado mediante el método de dicotomía, hemos usado
+    	la complejidad teórica como referencia inicial para afinar la búsqueda. Las cotas a las que llegamos fueron
+    	las siguientes:
 
 	En el caso del algoritmo de ordenacion por inserción tenemos que:
 
