@@ -184,8 +184,8 @@ Conclusiones:
     	anómala. En el caso del vector inicialmente ascendente, probamos n*logn como cota ligeramente
     	subestimada sin embargo nos salía como cota ligeramente sobrestimada. Si tenemos que n*log(n) > n
     	y t(n)/n tiende a una constante entonces t(n)/n*log(n) tendría decrecer pero no fue así. Seguramente
-    	se deba a que la función logarítmica crece muy rapido al principio y luego la pendiente se suaviza,
-    	al no poder coger el siguiente valor de n desechamos esta cota.
+    	se deba a que la función n*log(n) crece menos que n con valores pequeños, al no poder coger el siguiente 
+	valor de n para comprobar que es una cota valida la desechamos esta cota.
 
         n      t(n)        t(n)/n*logn t(n)/n      t(n)/logn
     	100    0.28000     0.0128945   0.0028000   0.06080123
