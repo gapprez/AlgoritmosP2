@@ -177,6 +177,61 @@ Los valores que aparecen en las tablas son los siguientes (de izquierda a derech
 	Cota sobreestimada
 
 Conclusiones:
-	Se han realizado varias mediciones, con las primeras la O decrecía y tuvimos que calentar el procesador para que saliera del modo ahorro de energía.
-	Hemos calculado todas las cotas empíricamente mediante mediante el método de dicotomía.
-	En general, llegamos a la conclusión de que el algoritmo de ordenación rápida es más rápido que el de inserción. Sin embargo, para el caso particular de inicialización ascendente, el algoritmo de ordenación por inserción es más rápido que el de ordenación rápida ya que sólo recorre el vector una vez para comprobar que el elemento i es mayor que el elemento i-1 (para todo i desde i = 1 hasta i = n).
+
+	Se han realizado varias mediciones, con las primeras la O decrecía y tuvimos que
+	calentar el procesador para que saliera del modo ahorro de energía.
+
+    tratando de acotar la complejidad del algoritmo de inserción nos encontramos con una situación
+    anómala. En el caso del vector inicialmente ascendente, probamos n*logn como cota ligeramente
+    subestimada sinembargo nos salía como cota ligeramente sobrestimada. Si tenemos que n*log(n) > n
+    y t(n)/n tiende a una constante entonces t(n)/n*log(n) tendría decrecer pero no fue así. Seguramente
+    se deba a que la función logarítmica crece muy rapido al principio y luego la pendiente se suaviza,
+    al no poder coger el siguiente valor de n desechamos esta cota.
+
+        n      t(n)        t(n)/n*logn t(n)/n      t(n)/logn
+    	100    0.28000     0.0128945   0.0028000   0.06080123
+    	200    0.56000     0.0148353   0.0028000   0.10569393
+    	400    1.12000     0.0167761   0.0028000   0.18693259
+    	800    3.03000     0.0253180   0.0037875   0.45327988
+    	1600   5.59000     0.0257760   0.0034937   0.75768266
+    	3200   9.57000     0.0241371   0.0029906   1.18574047
+    	6400   19.61000    0.0268536   0.0030641   2.23754916
+
+    Hemos calculado todas las cotas empíricamente, las hemos acotado mediante el método de dicotomía, hemos usado
+    la complejidad teórica como referencia inicial para afinar la búsqueda. Las cotas a las que llegamos fueron
+    las siguientes:
+
+	En el caso del algoritmo de ordenacion por inserción tenemos que:
+
+	    - para un vector inicialmente aleatorio
+	        - cota subestimada es -> n^2
+            - cota ajustada es -> n^(1.95)
+            - cota sobrestimada -> n^(1.8)
+
+        - para un vector inicialmente descendente
+            - cota subestimada es -> n^(2.2)
+            - cota ajustada es -> n^2
+            - cota sobrestimada -> n^(1.8)
+
+        - para un vector inicialmente ascendente
+            - cota subestimada es -> n^5 <- situación anómala
+            - cota ajustada es -> n
+            - cota sobrestimada -> log(n)
+
+	En el caso del algoritmo quickSort tenemos que:
+
+	    - para un vector inicialmente aleatorio, inicialmente descendente y inicialmente ascendente
+	        - cota subestimada es -> n
+	        - cota ajustada es -> n*log(n)
+	        - cota sobrestimada -> n^(1,2)
+
+	Hemos comparado los tiempos de ejecución del quicksort con diferentes umbrales, 1, 10 y 100. Hemos visto
+	que con situaciones iniciales de vectores ascendentes y descendentes a mayor umbral mejores tiempos,
+	sinembargo en el caso concreto de vector aleatorio no se sigue este patrón siendo el umbral 10 el que nos dio
+	mejor tiempo seguido del umbral 100 y 1 (TODO Falta el porqué de esta situación)
+
+	En general, llegamos a la conclusión de que el algoritmo de ordenación rápida es más rápido que el de inserción.
+	Sin embargo, para el caso particular de inicialización ascendente, el algoritmo de ordenación por inserción es más
+	rápido ya que sólo recorre el vector una vez para comprobar que el elemento i es mayor que el elemento i-1.
+
+
