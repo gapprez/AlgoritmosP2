@@ -16,9 +16,9 @@ typedef struct {
 	char* sobreS;
 	char* ajusS;
 	char* subS;
-	float* sobreF;
-	float* ajusF;
-	float* subF;
+	float sobreF;
+	float ajusF;
+	float subF;
 } cotas;
 
 void inicializar_semilla() {
@@ -143,7 +143,7 @@ int es_ordenado(int v[], int n){
 void mostrarArray(int v[], int n) {
 	int i;
 
-	for (i = 0; i < n - 1; ++i) {
+	for (i = 0; i < n - 1; i++) {
 		printf("%d, ", v[i]);
 	}
 	printf("%d\n", v[i]);
@@ -212,26 +212,26 @@ void obtenerN (int cod_op, cotas* c, int* ni, int* nf, int* mul) {
 
 }
 
-void calculoCotas(int cod_op, int n, cotas c) {
+void calculoCotas(int cod_op, int n, cotas* c) {
 
 	switch (cod_op) {
 		case 0:
 		case -1:
-			*c.sobreF =(float) pow(n, 1.8);
-			*c.ajusF =(float) pow(n, 2);
-			*c.subF =(float) (pow(n,2)*log(n));
+			c->subF =(float) pow(n, 1.8);
+			c->ajusF =(float) pow(n, 2);
+			c->sobreF =(float) (pow(n,2)*log(n));
 			break;
 		case -2:
-			*c.sobreF =(float) pow(n, 0.8);
-			*c.ajusF =(float) n;
-			*c.subF =(float) (n*log(n));
+			c->subF =(float) pow(n, 0.8);
+			c->ajusF =(float) n;
+			c->sobreF =(float) (n*log(n));
 			break;
 		case 3:
 		case 2:
 		case 1:
-			*c.sobreF =(float) n;
-			*c.ajusF =(float) (n*log(n));
-			*c.subF =(float) pow(n,1.2);
+			c->subF =(float) n;
+			c->ajusF =(float) (n*log(n));
+			c->sobreF =(float) pow(n,1.2);
 			break;
 		default:
 			break;
@@ -249,9 +249,6 @@ void complejidad(void (*ord)(int [], int),
 	c.subS = malloc(1024);
 	c.sobreS = malloc(1024);
 	c.ajusS = malloc(1024);
-	c.sobreF = malloc(1024* sizeof(float));
-	c.ajusF = malloc(1024* sizeof(float));
-	c.subF = malloc(1024* sizeof(float));
 
 	obtenerN(cod_op, &c, &n, &nf, &mul);
 
@@ -263,7 +260,7 @@ void complejidad(void (*ord)(int [], int),
 		ord(v, n);
 		tb = microsegundos();
 		t = tb - ta;
-		calculoCotas(cod_op, n, c);
+		calculoCotas(cod_op, n, &c);
 		if (t < 500) {
 			ta = microsegundos();
 			for (k = 0; k < 1000; k++) {
@@ -281,15 +278,12 @@ void complejidad(void (*ord)(int [], int),
 
 			ti = tb - ta;
 			t = (t - ti) / k;
-			printf("(*)%9d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(*c.sobreF), t/(*c.ajusF), t/(*c.subF));
+			printf("(*)%9d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(c.subF), t/(c.ajusF), t/(c.sobreF));
 		}
-		else printf("%12d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(*c.sobreF), t/(*c.ajusF), t/(*c.subF));
+		else printf("%12d\t%12.3f\t%.8f\t%.8f\t%.8f\n", n, t, t/(c.subF), t/(c.ajusF), t/(c.sobreF));
 		free(v);
 	}
 
-	free(c.sobreF);
-	free(c.ajusF);
-	free(c.subF);
 	free(c.subS);
 	free(c.sobreS);
 	free(c.ajusS);

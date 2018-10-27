@@ -1,0 +1,182 @@
+Autores:
+	Manuel Couto Pintos
+	Víctor Escudero González
+
+Introducción:
+	Se implementan dos algoritmos de ordenación de un vector (por inserciónn y rápida) en diferentes situaciones de inicialización del vector (aleatoria, en orden ascendente y en orden descendente) y se realizan pruebas empíricas para determinar la O grande.
+
+Máquina de referencia:
+	Modelo: HP Pavilion 14-bf011ns
+	Memoria: 7,7 GiB
+	Procesador: Intel® Core™ i7-7500U CPU @ 2.70GHz × 4
+	Gráficos: Intel® HD Graphics 620 (Kaby Lake GT2)
+	GNOME: 3.28.2
+	Tipo de SO: 64 bits
+	Disco: 257,2 GB
+
+Mediciones para el algoritmo de ordenación por inserción(t(n) en microsegundos):
+
+Ordenación por insercion con inicialización aleatoria
+
+           n	        t(n)	   n^(1.8)	       n^2	n^2*log(n)
+(*)      500	     168.447	0.00233516	0.00067379	0.00010842
+        1000	     629.000	0.00250409	0.00062900	0.00009106
+        2000	    2541.000	0.00290503	0.00063525	0.00008358
+        4000	   10695.000	0.00351134	0.00066844	0.00008059
+        8000	   41743.000	0.00393570	0.00065223	0.00007257
+       16000	  164947.000	0.00446610	0.00064432	0.00006656
+       32000	  662970.000	0.00515494	0.00064743	0.00006241
+						cte=0.000648
+-------------------------------------------------------------
+
+Ordenación por insercion con inicialización descendente
+
+           n	        t(n)	   n^(1.8)	       n^2	n^2*log(n)
+(*)      500	     325.930	0.00451833	0.00130372	0.00020978
+        1000	    1272.000	0.00506392	0.00127200	0.00018414
+        2000	    5045.000	0.00576776	0.00126125	0.00016593
+        4000	   21478.000	0.00705157	0.00134238	0.00016185
+        8000	   83554.000	0.00787781	0.00130553	0.00014527
+       16000	  333090.000	0.00901874	0.00130113	0.00013441
+       32000	 1329286.000	0.01033590	0.00129813	0.00012514
+						cte=0.00129
+-------------------------------------------------------------
+
+Ordenación por insercion con inicialización ascendente
+
+           n	        t(n)	     n^0.8	         n	  n*log(n)
+(*)      500	       1.677	0.01162404	0.00335400	0.00053970
+(*)     1000	       3.505	0.01395366	0.00350500	0.00050740
+(*)     2000	       7.423	0.01697288	0.00371150	0.00048830
+(*)     4000	      14.408	0.01892151	0.00360200	0.00043429
+(*)     8000	      28.021	0.02113546	0.00350263	0.00038973
+(*)    16000	      57.572	0.02494108	0.00359825	0.00037171
+(*)    32000	     113.584	0.02826163	0.00354950	0.00034217
+						cte=0.00358
+
+Mediciones para el algoritmo de ordenación rápida para distintos valores de umbral(t(n) en microsegundos):
+
+Con umbral = 1 (no se realiza llamada al método de ordenación por inserción):
+
+Ordenación rápida con inicialización aleatoria
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      88.181	0.08818100	0.01276551	0.02215007
+       10000	    1104.000	0.11040000	0.01198653	0.01749722
+      100000	   13402.000	0.13402000	0.01164083	0.01340200
+     1000000	  157266.000	0.15726600	0.01138329	0.00992281
+    10000000	 1785411.000	0.17854110	0.01107706	0.00710785
+   100000000	21578922.000	0.21578922	0.01171451	0.00542038
+						cte=0.0117
+-------------------------------------------------------------
+
+Ordenación rápida con inicialización descendente
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      32.999	0.03299900	0.00477709	0.00828897
+(*)    10000	     374.958	0.03749580	0.00407105	0.00594268
+      100000	    4374.000	0.04374000	0.00379921	0.00437400
+     1000000	   49870.000	0.04987000	0.00360971	0.00314658
+    10000000	  556804.000	0.05568040	0.00345453	0.00221668
+   100000000	 6727867.000	0.06727867	0.00365234	0.00168996
+						cte=0.00372
+-------------------------------------------------------------
+
+Ordenación rápida con inicialización ascendente
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      29.084	0.02908400	0.00421034	0.00730557
+(*)    10000	     357.952	0.03579520	0.00388641	0.00567316
+      100000	    4295.000	0.04295000	0.00373059	0.00429500
+     1000000	   48106.000	0.04810600	0.00348203	0.00303528
+    10000000	  545784.000	0.05457840	0.00338616	0.00217281
+   100000000	 6603134.000	0.06603134	0.00358463	0.00165863
+						cte=0.00362
+
+Con umbral = 10:
+
+Ordenación rápida con inicialización aleatoria
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      75.333	0.07533300	0.01090557	0.01892279
+       10000	     980.000	0.09800000	0.01064021	0.01553195
+      100000	   12126.000	0.12126000	0.01053251	0.01212600
+     1000000	  143932.000	0.14393200	0.01041815	0.00908150
+    10000000	 1655344.000	0.16553440	0.01027010	0.00659004
+   100000000	19888663.000	0.19888663	0.01079692	0.00499581
+						cte=0.0108
+-------------------------------------------------------------
+
+Ordenación rápida con inicialización descendente
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      22.544	0.02254400	0.00326358	0.00566280
+(*)    10000	     272.777	0.02727770	0.00296164	0.00432322
+      100000	    3677.000	0.03677000	0.00319380	0.00367700
+     1000000	   44265.000	0.04426500	0.00320401	0.00279293
+    10000000	  441419.000	0.04414190	0.00273865	0.00175732
+   100000000	 5434217.000	0.05434217	0.00295006	0.00136501
+						cte=0.00305
+-------------------------------------------------------------
+
+Ordenación rápida con inicialización ascendente
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      21.660	0.02166000	0.00313561	0.00544075
+(*)    10000	     262.199	0.02621990	0.00284679	0.00415557
+      100000	    3565.000	0.03565000	0.00309652	0.00356500
+     1000000	   42290.000	0.04229000	0.00306105	0.00266832
+    10000000	  470561.000	0.04705610	0.00291946	0.00187334
+   100000000	 5298174.000	0.05298174	0.00287621	0.00133084
+						cte=0.00291
+
+Con umbral = 100:
+
+Ordenación rápida con inicialización aleatoria
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      86.098	0.08609800	0.01246396	0.02162684
+       10000	    1075.000	0.10750000	0.01167166	0.01703760
+      100000	   13732.000	0.13732000	0.01192746	0.01373200
+     1000000	  154881.000	0.15488100	0.01121066	0.00977233
+    10000000	 1761973.000	0.17619730	0.01093164	0.00701454
+   100000000	20928626.000	0.20928626	0.01136148	0.00525703
+						cte=0.0114
+-------------------------------------------------------------
+
+Ordenación rápida con inicialización descendente
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      12.689	0.01268900	0.00183692	0.00318733
+(*)    10000	     179.224	0.01792240	0.00194590	0.00284051
+      100000	    2338.000	0.02338000	0.00203076	0.00233800
+     1000000	   32186.000	0.03218600	0.00232970	0.00203080
+    10000000	  367160.000	0.03671600	0.00227794	0.00146169
+   100000000	 4403658.000	0.04403658	0.00239061	0.00110615
+						cte=0.00225
+-------------------------------------------------------------
+
+Ordenación rápida con inicialización ascendente
+
+           n	        t(n)	         n	  n*log(n)	   n^(1,2)
+(*)     1000	      12.803	0.01280300	0.00185342	0.00321597
+(*)    10000	     186.522	0.01865220	0.00202514	0.00295617
+      100000	    2460.000	0.02460000	0.00213673	0.00246000
+     1000000	   34371.000	0.03437100	0.00248786	0.00216866
+    10000000	  392173.000	0.03921730	0.00243312	0.00156127
+   100000000	 4260397.000	0.04260397	0.00231283	0.00107016
+						cte=0.00235
+
+(*) -> Los tiempos son menores que 500 microsegundos, se ha calculado la media de la medición para k = 1000 iteraciones.
+
+Los valores que aparecen en las tablas son los siguientes (de izquierda a derecha):
+	n -> Tamaño del vector
+	t(n) -> Tiempo que tarda el algoritmo de ordenación en microsegundos
+	Cota subestimada
+	Cota ajustada
+	Cota sobreestimada
+
+Conclusiones:
+	Se han realizado varias mediciones, con las primeras la O decrecía y tuvimos que calentar el procesador para que saliera del modo ahorro de energía.
+	Hemos calculado todas las cotas empíricamente mediante mediante el método de dicotomía.
+	En general, llegamos a la conclusión de que el algoritmo de ordenación rápida es más rápido que el de inserción. Sin embargo, para el caso particular de inicialización ascendente, el algoritmo de ordenación por inserción es más rápido que el de ordenación rápida ya que sólo recorre el vector una vez para comprobar que el elemento i es mayor que el elemento i-1 (para todo i desde i = 1 hasta i = n).
