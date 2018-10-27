@@ -4,8 +4,12 @@
 #include <sys/time.h>
 #include <math.h>
 
-#define UMBRAL 1
+#define UMBRAL 10
 
+struct fun{
+	char* nombre;
+	void (*func)(int v[], int nargs);
+} ;
 
 void inicializar_semilla() {
     srand(time(NULL));
@@ -137,28 +141,18 @@ void mostrarArray(int v[], int n) {
 	printf("%d\n", v[i]);
 }
 
-struct {
-	char* nombre;
-	void (*func)(int v[], int nargs);
-} ini [] = {
-	{"aleatoria",aleatorio},
-	{"descendente", descendente},
-	{"ascendente", ascendente},
-	{NULL, NULL}
-}, ord [] = {
-		{"por insercion",ord_ins},
-		{"rápida", ord_rapida},
-		{NULL, NULL}
-};
 
-void test(){
+
+void test(struct fun ord[], struct fun ini[]){
+
+
 	int k = 10;
     int v[k];
     int i, j;
 
     inicializar_semilla();
 
-	for (j = 0; ord[j].func == ord_rapida; j++) {
+	for (j = 0; ord[j].func != NULL; j++) {
 		for (i = 0; ini[i].nombre != NULL; i++) {
 			ini[i].func(v, k);
 			printf("Ordenación %s con inicializacón %s\n",ord[j].nombre, ini[i].nombre);
@@ -176,14 +170,17 @@ void test(){
 	}
 }
 
-void complejidad(int v[], void (*ord)(int [], int),
+void complejidad(void (*ord)(int [], int),
 		void (*ini)(int [], int)) {
 
 	double ta, tb, t, ti;
 	int k, n;
+	int *v;
 
-	printf("%5s\t%5s\t%6s\t%7s\t%8s\n", "n", "t(n)", "t(n)/n^1.8", "t(n)/n^2", "t(n)/n^2.2");
+
+	printf("%-7s%-12s%-12s%-12s%-12s\n", "n", "t(n)", "t(n)/n^1.5", "t(n)/n", "t(n)/logn");
 	for (n = 100; n <= 6400; n = n * 2) {
+		v = malloc(sizeof(int)*n);
 		ini(v, n);
 		ta = microsegundos();
 		ord(v, n);
@@ -192,45 +189,72 @@ void complejidad(int v[], void (*ord)(int [], int),
 		if (t < 500) {
 			ta = microsegundos();
 			for (k = 0; k < 100; k++) {
-				aleatorio(v, n);
-				ord_ins(v, n);
+				ini(v, n);
+				ord(v, n);
 			}
 			tb = microsegundos();
 			t = tb - ta;
 
 			ta = microsegundos();
 			for (k = 0; k < 100; k++) {
-				aleatorio(v, n);
+				ini(v, n);
 			}
 			tb = microsegundos();
 
 			ti = tb - ta;
 			t = (t - ti) / k;
 		}
-		printf("%5d\t%5f\t%.6f\t%.7f\t%.8f\n", n, t, t / pow(n, 1.8), t / pow(n, 2), t / pow(n, 2.2));
+		printf("%-7d%-12.5f%-12.7f%-12.7f%-12.8f\n", n, t, t / pow(n,1.5), t / n, t / log(n));
+		free(v);
 	}
 }
 
-void mostrarComplejidad() {
-	int *v;
+void mostrarComplejidad(struct fun ord[], struct fun ini[]) {
+
 	int j, i;
 
-	v = malloc(1024);
+
 	inicializar_semilla();
 
 	for(j = 0; ord[j].nombre != NULL; j++) {
 		for (i = 0; ini[i].nombre != NULL; i++) {
 			printf("\n-------------------------------------------------------------\n");
 			printf("\nOrdenación %s con inicialización %s\n\n", ord[j].nombre, ini[i].nombre);
-			complejidad(v, ord[j].func, ini[i].func);
+			complejidad(ord[j].func, ini[i].func);
 		}
 	}
 
-	free(v);
+
 }
+
 
 int main() {
 
-	test();
-	mostrarComplejidad();
+	struct fun ini [] = {
+			//{"aleatoria",aleatorio},
+			//{"descendente", descendente},
+			{"ascendente", ascendente},
+			{NULL, NULL}
+	};
+
+	struct fun ord [] = {
+			{"por insercion",ord_ins},
+	//		{"rápida", ord_rapida},
+			{NULL, NULL}
+	};
+
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+	test(ord, ini);test(ord, ini);test(ord, ini);
+
+	mostrarComplejidad(ord, ini);
 }
