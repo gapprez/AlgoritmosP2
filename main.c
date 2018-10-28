@@ -5,7 +5,7 @@
 #include <math.h>
 #include <string.h>
 
-#define UMBRAL 100
+#define UMBRAL 10
 
 typedef struct {
 	char* nombre;
