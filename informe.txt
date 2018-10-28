@@ -182,19 +182,19 @@ Conclusiones:
 
     	tratando de acotar la complejidad del algoritmo de inserción nos encontramos con una situación
     	anómala. En el caso del vector inicialmente ascendente, probamos n*logn como cota ligeramente
-    	subestimada sin embargo nos salía como cota ligeramente sobrestimada. Si tenemos que n*log(n) > n
+    	sobrestimada sin embargo nos salía como cota ligeramente subestima. Si tenemos que n*log(n) > n
     	y t(n)/n tiende a una constante entonces t(n)/n*log(n) tendría decrecer pero no fue así. Seguramente
-    	se deba a que la función n*log(n) crece menos que n con valores pequeños, al no poder coger el siguiente 
-	valor de n para comprobar que es una cota valida la desechamos esta cota.
+    	se deba a que la función n*log(n) crece menos que n con valores pequeños, cambiamos la máquina de referencia 
+	y dejamos de tener el problema.
 
-        n      t(n)        t(n)/n*logn t(n)/n      t(n)/logn
-    	100    0.28000     0.0128945   0.0028000   0.06080123
-    	200    0.56000     0.0148353   0.0028000   0.10569393
-    	400    1.12000     0.0167761   0.0028000   0.18693259
-    	800    3.03000     0.0253180   0.0037875   0.45327988
-    	1600   5.59000     0.0257760   0.0034937   0.75768266
-    	3200   9.57000     0.0241371   0.0029906   1.18574047
-    	6400   19.61000    0.0268536   0.0030641   2.23754916
+        n      t(n)        t(n)/n*logn 	t(n)/n   
+    	100    0.28000     0.0128945   	0.0028000
+    	200    0.56000     0.0148353   	0.0028000
+    	400    1.12000     0.0167761   	0.0028000
+    	800    3.03000     0.0253180   	0.0037875
+    	1600   5.59000     0.0257760   	0.0034937
+    	3200   9.57000     0.0241371   	0.0029906
+    	6400   19.61000    0.0268536   	0.0030641
 
     	Hemos calculado todas las cotas empíricamente, las hemos acotado mediante el método de dicotomía, hemos usado
     	la complejidad teórica como referencia inicial para afinar la búsqueda. Las cotas a las que llegamos fueron
@@ -202,20 +202,20 @@ Conclusiones:
 
 	En el caso del algoritmo de ordenacion por inserción tenemos que:
 
-	    - para un vector inicialmente aleatorio
-	        - cota subestimada es -> n^2
-            - cota ajustada es -> n^(1.95)
-            - cota sobrestimada -> n^(1.8)
+	- para un vector inicialmente aleatorio
+	    - cota subestimada es -> n^(1.8)
+            - cota ajustada es -> n^2
+            - cota sobrestimada -> n^(2*log(n))
 
         - para un vector inicialmente descendente
-            - cota subestimada es -> n^(2.2)
+            - cota subestimada es -> n^(1.8)
             - cota ajustada es -> n^2
-            - cota sobrestimada -> n^(1.8)
+            - cota sobrestimada -> n^(2*log(n))
 
         - para un vector inicialmente ascendente
-            - cota subestimada es -> n^5 <- situación anómala
+            - cota subestimada es -> n^(0.8)
             - cota ajustada es -> n
-            - cota sobrestimada -> log(n)
+            - cota sobrestimada -> n*log(n)
 
 	En el caso del algoritmo quickSort tenemos que:
 
